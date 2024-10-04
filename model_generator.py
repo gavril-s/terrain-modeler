@@ -32,16 +32,20 @@ def generate_html(output_dir, data, show_points):
         z=z_tri,
         intensity=z_tri,
         color="lightblue",
-        opacity=0.8,
-        showscale=False,
+        opacity=0.95 if show_points else 1,
+        showscale=True,
+        flatshading=True,
+        lighting=dict(ambient=0.6, diffuse=0.4, specular=0.3, roughness=0.5) 
     )
 
     plots = [surface]
     if show_points:
-        points = go.Scatter3d(x=x, y=y, z=z, mode="markers", marker=dict(size=5, color="black"))
+        points = go.Scatter3d(x=x, y=y, z=z, mode="markers", marker=dict(size=4, color="black"))
         plots.append(points)
     fig = go.Figure(data=plots)
-    fig.update_layout(scene=dict(xaxis_title="X", yaxis_title="Y", zaxis_title="Z"))  # lon, lat, height
+    fig.update_layout(scene=dict(
+        xaxis_title="X", yaxis_title="Y", zaxis_title="Z" # lon, lat, height
+    ))  
 
     id = uuid.uuid4()
     filename = f"{id}.html"
