@@ -33,7 +33,7 @@ const translations = {
 
 
 function updateLanguageButton(lang) {
-    const languageButton = document.getElementById('languageButton');
+    const languageButton = document.getElementById('language-button');
     languageButton.textContent = lang === 'en' ? 'English' : 'Русский';
 }
 

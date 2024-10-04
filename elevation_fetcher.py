@@ -19,7 +19,8 @@ def get_elevations_from_open_meteo(coords):
         data = resp.json()
         return data["elevation"]
     else:
-        raise(f"Error fetching elevation data: {resp.status_code}")
+        raise (f"Error fetching elevation data: {resp.status_code}")
+
 
 def get_elevations_from_open_elevation(coords):
     url = "https://api.open-elevation.com/api/v1/lookup"
@@ -29,26 +30,23 @@ def get_elevations_from_open_elevation(coords):
         data = resp.json()
         return [item["elevation"] for item in data["results"]]
     else:
-        raise(f"Error fetching elesvation data: {resp.status_code}")
+        raise (f"Error fetching elesvation data: {resp.status_code}")
 
 
 apis = {
-    'https://api.open-meteo.com': get_elevations_from_open_meteo,
-    'https://api.open-elevation.com': get_elevations_from_open_elevation
+    "https://api.open-meteo.com": get_elevations_from_open_meteo,
+    "https://api.open-elevation.com": get_elevations_from_open_elevation,
 }
 
 
 def get_elevations(coords, api):
     handler = apis[api]
     if handler is None:
-        raise("Invalid API choice:", api)
+        raise ("Invalid API choice:", api)
     return handler(coords)
 
 
-def generate_coordinates(
-    top_left_lat, top_left_lon, bottom_right_lat, bottom_right_lon,
-    lat_points, lon_points
-):
+def generate_coordinates(top_left_lat, top_left_lon, bottom_right_lat, bottom_right_lon, lat_points, lon_points):
     lat_step = (top_left_lat - bottom_right_lat) / (lat_points - 1)
     lon_step = (bottom_right_lon - top_left_lon) / (lon_points - 1)
 
@@ -70,19 +68,13 @@ def fetch_elevations(coords, api):
             if len(elevations) == 0:
                 elevations = [[0, 0, resp[j]]]
             else:
-                latd = distance(
-                    batch[j][0], batch[j][1], coords[0][0], batch[j][1]
-                )
-                lond = distance(
-                    batch[j][0], batch[j][1], batch[j][0], coords[0][1]
-                )
+                latd = distance(batch[j][0], batch[j][1], coords[0][0], batch[j][1])
+                lond = distance(batch[j][0], batch[j][1], batch[j][0], coords[0][1])
                 elevations.append([lond, latd, resp[j]])
     return elevations
 
 
 def fetch_rectangle(top_left, bottom_right, lat_points, lon_points, api):
-    coords = generate_coordinates(
-        top_left[0], top_left[1], bottom_right[0], bottom_right[1], lat_points, lon_points
-    )
+    coords = generate_coordinates(top_left[0], top_left[1], bottom_right[0], bottom_right[1], lat_points, lon_points)
     elevations = fetch_elevations(coords, api)
     return elevations

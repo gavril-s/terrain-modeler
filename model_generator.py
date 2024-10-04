@@ -6,10 +6,9 @@ import plotly.graph_objects as go
 import uuid
 import elevation_fetcher
 
+
 def generate(output_dir, top_left, bottom_right, lat_points, lon_points, show_points, api):
-    elevations = elevation_fetcher.fetch_rectangle(
-        top_left, bottom_right, lat_points, lon_points, api
-    )
+    elevations = elevation_fetcher.fetch_rectangle(top_left, bottom_right, lat_points, lon_points, api)
     id = generate_html(output_dir, elevations, show_points)
     generate_csv(output_dir, id, elevations)
     return id
@@ -32,31 +31,27 @@ def generate_html(output_dir, data, show_points):
         y=y_tri,
         z=z_tri,
         intensity=z_tri,
-        color='lightblue',
+        color="lightblue",
         opacity=0.8,
         showscale=False,
     )
 
     plots = [surface]
     if show_points:
-        points = go.Scatter3d(
-            x=x, y=y, z=z, mode='markers', marker=dict(size=5, color='black')
-        )
+        points = go.Scatter3d(x=x, y=y, z=z, mode="markers", marker=dict(size=5, color="black"))
         plots.append(points)
     fig = go.Figure(data=plots)
-    fig.update_layout(
-        scene=dict(xaxis_title='X', yaxis_title='Y', zaxis_title='Z') # lon, lat, height
-    )
+    fig.update_layout(scene=dict(xaxis_title="X", yaxis_title="Y", zaxis_title="Z"))  # lon, lat, height
 
     id = uuid.uuid4()
-    filename = f'{id}.html'
-    fig.write_html(os.path.join(output_dir, 'models', filename))
+    filename = f"{id}.html"
+    fig.write_html(os.path.join(output_dir, "models", filename))
     return id
 
 
 def generate_csv(output_dir, id, data):
-    output_file = os.path.join(output_dir, 'csv', f'{id}.csv')
-    with open(output_file, 'w', newline='') as out:
+    output_file = os.path.join(output_dir, "csv", f"{id}.csv")
+    with open(output_file, "w", newline="") as out:
         writer = csv.writer(out)
         for row in data:
             writer.writerow(row)
