@@ -132,4 +132,5 @@ function initSlider() {
 function init() {
     initMap()
     initSlider()
+    updateLanguageButton(currentLanguage);
 }
