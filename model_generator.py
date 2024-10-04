@@ -45,7 +45,7 @@ def generate_html(output_dir, data, show_points):
         plots.append(points)
     fig = go.Figure(data=plots)
     fig.update_layout(
-        scene=dict(xaxis_title='Y', yaxis_title='X', zaxis_title='Z') # lat, lon, height
+        scene=dict(xaxis_title='X', yaxis_title='Y', zaxis_title='Z') # lon, lat, height
     )
 
     id = uuid.uuid4()

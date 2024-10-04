@@ -76,7 +76,7 @@ def fetch_elevations(coords, api):
                 lond = distance(
                     batch[j][0], batch[j][1], batch[j][0], coords[0][1]
                 )
-                elevations.append([latd, lond, resp[j]])
+                elevations.append([lond, latd, resp[j]])
     return elevations
 
 
