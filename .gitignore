@@ -2,8 +2,8 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,linux,macos,windows,git,visualstudiocode,pycharm,notepadpp
 
 ### Custom ###
-static/csv
-static/models
+static/csv/*.csv
+static/models/*.html
 venv
 
 ### Git ###
