@@ -49,12 +49,12 @@ def generate_coordinates(
     top_left_lat, top_left_lon, bottom_right_lat, bottom_right_lon,
     lat_points, lon_points
 ):
-    lat_step = (top_left_lat - bottom_right_lat) / lat_points
-    lon_step = (bottom_right_lon - top_left_lon) / lon_points
+    lat_step = (top_left_lat - bottom_right_lat) / (lat_points - 1)
+    lon_step = (bottom_right_lon - top_left_lon) / (lon_points - 1)
 
     coordinates = []
-    for i in range(lat_points + 1):
-        for j in range(lon_points + 1):
+    for i in range(lat_points):
+        for j in range(lon_points):
             lat = top_left_lat - i * lat_step
             lon = top_left_lon + j * lon_step
             coordinates.append((lat, lon))

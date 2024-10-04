@@ -37,7 +37,6 @@ def generate_html(output_dir, data, show_points):
         showscale=False,
     )
 
-    
     plots = [surface]
     if show_points:
         points = go.Scatter3d(
