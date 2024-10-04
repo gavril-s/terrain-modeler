@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Terrain Modeler</title>
+        <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="styles/style.css">
+    </head>
+    <body onload="init()">
+        <div class="container-fluid">
+            <h1 class="text-center m-4">Terrain Modeler</h1>
+            <div class="row">
+                <div class="col-xl-8 col-lg-12">
+                    <div id="map" class="map"></div>
+                </div>
+                <div class="col-xl-4 col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Terrain Modeler</h5>
+                            <p class="card-text">Выберите левый верхний и правый нижний углы участка, который хотите смоделировать, дальше жмите на кнопки. Формат записей в CSV-файле - X,Y,Z (значения в метрах), его можно импортировать в Revit.</p>
+                            <form id="coordsForm" action="javascript:void(0);" onsubmit="submitCoordsForm()">
+                                <div class="form-group">
+                                    <label for="top_left">Координаты верхнего левого угла:</label>
+                                    <input type="text" class="form-control form-control-sm" id="top_left" name="top_left" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="bottom_right">Координаты правого нижнего угла:</label>
+                                    <input type="text" class="form-control form-control-sm" id="bottom_right" name="bottom_right" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>API для получения высот:</label>
+                                    <div>
+                                        <input type="radio" id="api1" name="api" value="https://api.open-meteo.com" checked>
+                                        <label for="api1">https://api.open-meteo.com</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" id="api2" name="api" value="https://api.open-elevation.com">
+                                        <label for="api2">https://api.open-elevation.com</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="points-slider">Количество точек:</label>
+                                    <div class="row-1 d-flex justify-content-center">
+                                        <div class="col-md-10">
+                                            <input type="range" class="form-control form-control-sm" id="points-slider" name="points" min="100" max="10000" step="1" value="100">
+                                        </div>
+                                    </div>
+                                    <div class="row-2 text-center">
+                                        <span id="slider-value">100</span>
+                                    </div>         
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 text-center m-1">
+                                        <button type="submit" class="btn btn-primary" onclick="generateModel()">Сгенерировать модель</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="row">
+                                <div class="col-12 text-center m-1">
+                                    <button id="open-preview" class="btn btn-primary" disabled onclick="openPreview()">Открыть визуализацию</button>
+                                </div>
+                                <div class="col-12 text-center m-1">
+                                    <button id="download-csv" class="btn btn-primary" disabled onclick="downloadCSV()">Скачать CSV</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer mt-4 py-1 text-center">
+            <div class="container">
+                <a href="https://github.com/gavril-s/terrain-modeler">
+                    <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo" height="20"> 
+                    GitHub
+                </a>
+            </div>
+        </footer>
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="scripts/index.js"></script>
+    </body>
+</html>
