@@ -96,17 +96,17 @@ function initSlider() {
     for (let i = 10; i <= 100; i++) {
         squaresOfNumbersUpTo100.push(i * i);
     }
-    const squaresOfNumbersUpTo1000 = [];
-    for (let i = 10; i <= 1000; i++) {
-        squaresOfNumbersUpTo1000.push(i * i);
+    const squaresOfNumbersUpTo318 = []; // 318 ^ 2 ~= 100k
+    for (let i = 10; i <= 318; i++) {
+        squaresOfNumbersUpTo318.push(i * i);
     }
 
     let squareNumbers = squaresOfNumbersUpTo100; 
 
     function updateSliderMax() {
         if (api2.checked) {
-            slider.max = 1000 * 1000;
-            squareNumbers = squaresOfNumbersUpTo1000;
+            slider.max = 318 * 318;
+            squareNumbers = squaresOfNumbersUpTo318;
         } else {
             slider.max = 100 * 100;
             squareNumbers = squaresOfNumbersUpTo100;

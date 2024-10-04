@@ -16,12 +16,13 @@ def generate():
     bottom_right = parse_coords(request.form.get('bottom_right'))
     points = int(request.form.get('points'))
     api = request.form.get('api')
+    show_points = request.form.get('show_points')
 
     if top_left and bottom_right:
         try:
             points_per_axis = round(math.sqrt(float(points)))
             id = model_generator.generate(
-                'static', top_left, bottom_right, points_per_axis, points_per_axis, api
+                'static', top_left, bottom_right, points_per_axis, points_per_axis, show_points, api
             )
             delete_old_files()
             return jsonify({'id': id}), {'Content-Type': 'application/json'}
@@ -75,27 +76,27 @@ def delete_old_files():
 
 def delete_old_html_files():
     models_dir = 'static/models'
-    one_week_ago = datetime.datetime.now() - datetime.timedelta(days=7)
+    threshold = datetime.datetime.now() - datetime.timedelta(days=1)
     for filename in os.listdir(models_dir):
         if filename.endswith('.html'):
             filepath = os.path.join(models_dir, filename)
             file_modified_time = datetime.datetime.fromtimestamp(
                 os.path.getmtime(filepath)
             )
-            if file_modified_time < one_week_ago:
+            if file_modified_time < threshold:
                 os.remove(filepath)
 
 
 def delete_old_csv_files():
     csv_dir = 'static/csv'
-    one_week_ago = datetime.datetime.now() - datetime.timedelta(days=7)
+    threshold = datetime.datetime.now() - datetime.timedelta(days=1)
     for filename in os.listdir(csv_dir):
         if filename.endswith('.csv'):
             filepath = os.path.join(csv_dir, filename)
             file_modified_time = datetime.datetime.fromtimestamp(
                 os.path.getmtime(filepath)
             )
-            if file_modified_time < one_week_ago:
+            if file_modified_time < threshold:
                 os.remove(filepath)
 
 

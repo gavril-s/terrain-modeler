@@ -6,16 +6,16 @@ import plotly.graph_objects as go
 import uuid
 import elevation_fetcher
 
-def generate(output_dir, top_left, bottom_right, lat_points, lon_points, api):
+def generate(output_dir, top_left, bottom_right, lat_points, lon_points, show_points, api):
     elevations = elevation_fetcher.fetch_rectangle(
         top_left, bottom_right, lat_points, lon_points, api
     )
-    id = generate_html(output_dir, elevations)
+    id = generate_html(output_dir, elevations, show_points)
     generate_csv(output_dir, id, elevations)
     return id
 
 
-def generate_html(output_dir, data):
+def generate_html(output_dir, data, show_points):
     x = np.array([point[0] for point in data])
     y = np.array([point[1] for point in data])
     z = np.array([point[2] for point in data])
@@ -37,12 +37,17 @@ def generate_html(output_dir, data):
         showscale=False,
     )
 
-    points = go.Scatter3d(
-        x=x, y=y, z=z, mode='markers', marker=dict(size=5, color='black')
+    
+    plots = [surface]
+    if show_points:
+        points = go.Scatter3d(
+            x=x, y=y, z=z, mode='markers', marker=dict(size=5, color='black')
+        )
+        plots.append(points)
+    fig = go.Figure(data=plots)
+    fig.update_layout(
+        scene=dict(xaxis_title='Y', yaxis_title='X', zaxis_title='Z') # lat, lon, height
     )
-
-    fig = go.Figure(data=[surface, points])
-    fig.update_layout(scene=dict(xaxis_title='X', yaxis_title='Y', zaxis_title='Z'))
 
     id = uuid.uuid4()
     filename = f'{id}.html'
